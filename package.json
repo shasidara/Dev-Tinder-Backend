@@ -1,0 +1,23 @@
+{
+  "name": "dev-tinder-backend",
+  "version": "1.0.0",
+  "description": "tinder for devs",
+  "keywords": [
+    "node.js",
+    "backend"
+  ],
+  "license": "ISC",
+  "author": "Shasidara",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
