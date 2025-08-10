@@ -1,23 +1,18 @@
 const express = require('express');
 
+const {adminAuth} = require("./middleware/auth");
+
 const app = express();
 
-app.patch("/user", (req, res) => {
-    res.send("Hello from patch request!");
-})
+app.use("/admin", adminAuth);
 
-app.delete("/user", (req, res) => {
-    res.send("Abaracadabra");
-})
-
-app.post("/user", (req, res) => {
-    res.send("Hello hello hello....");
+app.get("/admin/getData", (req, res) => {
+    res.send("sent data successfully");
 });
 
-app.get("/user", (req, res) => {
-    res.send("Hello from dashboard!");
-});
-
+app.delete("/admin/deleteData", (req, res) => {
+    res.send("deleted data successfully");
+})
 
 app.listen(2006, () => {
     console.log("server is successfully listening on port 2006");
