@@ -14,7 +14,7 @@ app.post("/signup", async (req, res) => {
         if (!user) {
             res.status(404).send("User not found");
         } else {
-            res.send(user);
+            res.send("Data added successfully");
         }
     } catch(err) {
         console.error("Oops! somethig went wrong", err.message);
@@ -65,7 +65,7 @@ app.patch("/user", async (req, res) => {
     const userId = req.body.userId;
     const data = req.body;
     try {
-        const users = await User.findByIdAndUpdate({ _id: userId }, data, { returnDocument: "after"});
+        const users = await User.findByIdAndUpdate({ _id: userId }, data, { returnDocument: "after"}, { runValidators: true });
         if(!users) {
             res.status(404).send("Users not found");
         } else {
