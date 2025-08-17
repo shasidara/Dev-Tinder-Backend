@@ -1,6 +1,7 @@
 const express = require('express');
 const {connectDB} = require("./config/database");
 const User = require("./models/user");
+const user = require('./models/user');
 const app = express();
 
 app.use(express.json());
@@ -10,7 +11,11 @@ app.post("/signup", async (req, res) => {
 
     try {
         await user.save();
-        res.send("Data is saved successfully");
+        if (!user) {
+            res.status(404).send("User not found");
+        } else {
+            res.send(user);
+        }
     } catch(err) {
         console.error("Oops! somethig went wrong", err.message);
     }
@@ -39,6 +44,35 @@ app.get("/feed", async (req, res) => {
         }
     } catch(err) {
         res.status(404).send("Oops! Something went wrong");
+    }
+});
+
+app.delete("/user", async (req, res) => {
+    const userId = req.body.userId;
+    try {
+        const users = await User.findByIdAndDelete(userId);  
+        if(!users){
+            res.status(404).send("Users not found");
+        } else {
+            res.send("User successfully deleted");
+        }
+    } catch(err) {
+        res.status(404).send("Oops! something went wrong");
+    }
+});
+
+app.patch("/user", async (req, res) => {
+    const userId = req.body.userId;
+    const data = req.body;
+    try {
+        const users = await User.findByIdAndUpdate({ _id: userId }, data, { returnDocument: "after"});
+        if(!users) {
+            res.status(404).send("Users not found");
+        } else {
+            res.send("User updated successfully");
+        }
+    } catch(err) {
+        res.status(404).send("Oops! something went wrong");
     }
 });
 
