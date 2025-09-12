@@ -8,9 +8,9 @@ proflieRouter.get("/profile/view", userAuth, async (req, res) => {
     try{
        const users = req.users;
        
-       res.send(users);
+       res.json({data: users});
     } catch(err) {
-        res.status(400).send("ERROR: " + err.message);
+        res.status(400).json({message: "ERROR: " + err.message});
     };
 });
 
@@ -29,7 +29,7 @@ proflieRouter.patch("/profile/edit", userAuth, async (req, res) => {
 
         res.json({message: `${users.firstName} your proflie updated successfully`, data: users});
     } catch(err) {
-        res.status(400).send("ERROR: " + err.message);
+        res.status(400).json({message: "ERROR: " + err.message});
     };
 });
 
