@@ -21,11 +21,18 @@ authRouter.post("/signup", async (req, res) => {
             email,
             password: passwordHash,
         });
-        await user.save();
+        const savedUser = await user.save();
+
+        const token = await savedUser.getJWT();
+
+        res.cookie("token", token, 
+            { expires: new Date(Date.now() + 8 * 3600000) }
+        );
+
         if (!user) {
             res.status(404).send("User not found");
         } else {
-            res.send("Data added successfully");
+            res.json({message: "Data added Successfully", data: savedUser});
         }
     } catch(err) {
         res.status(404).send("ERROR: " + err.message);

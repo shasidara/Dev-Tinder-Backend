@@ -2,6 +2,7 @@ const express = require("express");
 const {userAuth} = require("../middleware/auth");
 const ConnectionRequest = require("../models/connectionRequest");
 const User = require("../models/user");
+const user = require("../models/user");
 
 const userRouter = express.Router();
 
@@ -34,7 +35,7 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
         }).populate("fromUserId", USER_SAFE_DATA).populate("toUserId", USER_SAFE_DATA);
 
         const data = connectionRequests.map((row) => {
-            if(row.fromUserId._id.toString() === row.toUserId._id.toString()){
+            if(row.fromUserId._id.toString() === loggedInUser._id.toString()){
                 return row.toUserId;
             }
             return row.fromUserId;
@@ -51,7 +52,7 @@ userRouter.get("/feed", userAuth, async (req, res) => {
         const loggedInUser = req.users;
 
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
+        let limit = parseInt(req.query.limit) || 10;
         limit = limit > 50 ? 50 : limit;
         const skip = (page -1) * limit;
 
