@@ -5,9 +5,14 @@ const cors = require("cors");
 const app = express();
 require("dotenv").config();
 
-app.use(cors({ 
-    origin: 'http://localhost:5173',
-    credentials: true,
+const allowed = [process.env.CLIENT_URL, 'http://localhost:5173'];
+app.use(cors({
+  origin: (origin, cb) => {
+    if (!origin) return cb(null, true);
+    if (allowed.includes(origin)) return cb(null, true);
+    cb(new Error("CORS blocked"), false);
+  },
+  credentials: true
 }));
 app.use(express.json());
 app.use(cookieParser());
