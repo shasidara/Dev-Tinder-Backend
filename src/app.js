@@ -1,19 +1,15 @@
+require("dotenv").config();
 const express = require('express');
 const {connectDB} = require("./config/database");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const app = express();
-require("dotenv").config();
 
-const allowed = [process.env.CLIENT_URL, 'http://localhost:5173'];
-app.use(cors({
-  origin: (origin, cb) => {
-    if (!origin) return cb(null, true);
-    if (allowed.includes(origin)) return cb(null, true);
-    cb(new Error("CORS blocked"), false);
-  },
-  credentials: true
-}));
+app.use(cors({ 
+    origin: 'https://dev-tinder-backend-62i1.onrender.com',
+    credentials: true,
+  }
+));
 app.use(express.json());
 app.use(cookieParser());
 
